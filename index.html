@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>Philipp Vlasov</title>
+    <style>
+        h4 {
+            text-align: center; }
+
+        .arrow {
+            -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%; }
+
+        svg {
+            display: block;
+            margin: 0 auto;
+            width: 250px;
+            height: auto; }
+
+        .calc {
+            padding: 5px;
+            background-color: #E0E0E0;
+            width: 300px;
+            margin: 50px auto;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between; }
+        .calc input {
+            width: calc(100% - 4px);
+            text-align: right; }
+        .calc .upperButtons {
+            width: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            padding: 5px 0; }
+        .calc .upperButtons button {
+            margin: 2px 0;
+            width: 32%; }
+        .calc .upperButtons .active {
+            background-color: #999999; }
+        .calc .upperButtons .enter {
+            width: 50%; }
+
+        .inputString {
+            width: 300px;
+            margin: 0 auto; }
+        .inputString input {
+            width: 100%; }
+
+    </style>
+</head>
+<body>
+
+<h4>Часы</h4>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+    <defs>
+        <style>
+            .cls-1 {
+                fill: #fff;
+            }
+
+            .cls-2 {
+                fill: none;
+                stroke: #000;
+                stroke-miterlimit: 10;
+                stroke-width: 10px;
+            }
+
+            .cls-3 {
+                fill: #fbb03b;
+            }
+
+            .cls-4 {
+                fill: #f15a24;
+            }
+        </style>
+    </defs>
+    <title>clock</title>
+    <g id="clock_table" data-name="clock table">
+        <g>
+            <path class="cls-1"
+                  d="M300,599.5A299.5,299.5,0,0,1,88.22,88.22,299.5,299.5,0,0,1,511.78,511.78,297.54,297.54,0,0,1,300,599.5Z"/>
+            <path d="M300,1A299.08,299.08,0,0,1,416.38,575.5a299.07,299.07,0,0,1-232.76-551A297.11,297.11,0,0,1,300,1m0-1C134.31,0,0,134.31,0,300S134.31,600,300,600,600,465.69,600,300,465.69,0,300,0Z"/>
+        </g>
+        <path class="cls-2"
+              d="M300,300,0,300H600M40.19,450,559.81,150M150,559.81,450,40.19M300,600V0M150,40.19,450,559.81M40.19,150,559.81,450"/>
+        <circle class="cls-1" cx="299.5" cy="300.5" r="275"/>
+    </g>
+    <g class="arrow" id="minutes">
+        <path class="cls-3" d="M300.5,36.5,275,300a25,25,0,0,0,50,0Z"/>
+    </g>
+    <g class="arrow" id="hour">
+        <path class="cls-4" d="M300,135,280,300c0,13.81,7.19,20,21,20s19-6.19,19-20Z"/>
+    </g>
+</svg>
+
+<h4>Калькулятор</h4>
+<form class="calc" method="get">
+    <input type="number">
+    <div class="upperButtons">
+        <button class="button">sqr</button>
+        <button class="button">sqrt</button>
+        <button class="button">ln</button>
+    </div>
+    <p class="tip"></p>
+</form>
+
+<h4>Проверка строки</h4>
+<form class="inputString" onsubmit="checkString(event)">
+    <input class="checkString" type="text">
+    <p class="count"></p>
+</form>
+
+
+<script>
+
+    /*
+    Реализуйте на языке JavaScript виджет “часы”, показывающие текущее время. Обновляться они должны раз в минуту, показывается только часовая и минутная стрелки. Допустимо решение с использованием canvas или svg.
+    */
+    function displayCurrentTime() {
+        let time = new Date(),
+            hour = time.getHours(),
+            minutes = time.getMinutes();
+
+        document.getElementById('hour').style.transform = 'rotate(' + (hour * 30) + 'deg)';
+        document.getElementById('minutes').style.transform = 'rotate(' + (minutes * 6) + 'deg)';
+    }
+
+    displayCurrentTime();
+
+    window.setInterval(function () {
+        displayCurrentTime();
+    }, 60000);
+
+    /*
+    Реализовать на языке JavaScript калькулятор, реализующий функции: возведение в степень, взятие корня и взятие натурального логарифма. В поле ввода допустимо только число.
+
+    */
+    let buttons = document.getElementsByClassName('button'),
+        flag = true,
+        prevNumber;
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function (event) {
+            event.preventDefault();
+
+            let number = document.querySelector('.calc input').value;
+            if (!number) {
+                number = 0;
+            }
+
+            if (this.innerHTML === 'sqrt') {
+                document.querySelector('.tip').innerHTML = '&radic;' + number + ' = ' + Math.sqrt(number);
+
+            } else if (this.innerHTML === 'sqr') {
+
+                flag ^= true;
+
+                if (!flag) {
+                    document.querySelector('.tip').innerHTML = number + '^';
+                    prevNumber = number;
+                } else {
+                    document.querySelector('.tip').innerHTML = prevNumber + '^' + number + ' = ' + Math.pow(prevNumber, number);
+                }
+
+            } else if (this.innerHTML === 'ln') {
+
+                document.querySelector('.tip').innerHTML = 'ln(' + number + ') = ' + Math.log(number);
+            }
+        })
+    }
+
+    /*
+    Написать функцию на языке JavaScript, которая подсчитывает количество идущих подряд символов ‘xy’ в строке, без учета регистра.
+    */
+    function checkString(event) {
+        event.preventDefault();
+
+        let checkString = document.querySelector('.checkString').value.toLowerCase();
+
+        document.querySelector('.count').innerHTML = 'Символы "xy" встречаются ' + (checkString.match(/xy/g) || []).length + ' раз(a)';
+
+    }
+
+</script>
+
+</body>
+</html>

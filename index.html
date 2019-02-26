@@ -9,17 +9,20 @@
     <title>Philipp Vlasov</title>
     <style>
         h4 {
-            text-align: center; }
+            text-align: center;
+        }
 
         .arrow {
             -webkit-transform-origin: 50% 50%;
-            transform-origin: 50% 50%; }
+            transform-origin: 50% 50%;
+        }
 
         svg {
             display: block;
             margin: 0 auto;
             width: 250px;
-            height: auto; }
+            height: auto;
+        }
 
         .calc {
             padding: 5px;
@@ -33,10 +36,14 @@
             flex-wrap: wrap;
             -webkit-box-pack: justify;
             -ms-flex-pack: justify;
-            justify-content: space-between; }
+            justify-content: space-between;
+        }
+
         .calc input {
             width: calc(100% - 4px);
-            text-align: right; }
+            text-align: right;
+        }
+
         .calc .upperButtons {
             width: 100%;
             display: -webkit-box;
@@ -47,20 +54,30 @@
             -webkit-box-pack: justify;
             -ms-flex-pack: justify;
             justify-content: space-between;
-            padding: 5px 0; }
+            padding: 5px 0;
+        }
+
         .calc .upperButtons button {
             margin: 2px 0;
-            width: 32%; }
+            width: 32%;
+        }
+
         .calc .upperButtons .active {
-            background-color: #999999; }
+            background-color: #999999;
+        }
+
         .calc .upperButtons .enter {
-            width: 50%; }
+            width: 50%;
+        }
 
         .inputString {
             width: 300px;
-            margin: 0 auto; }
+            margin: 0 auto;
+        }
+
         .inputString input {
-            width: 100%; }
+            width: 100%;
+        }
 
     </style>
 </head>
@@ -153,6 +170,7 @@
     */
     let buttons = document.getElementsByClassName('button'),
         flag = true,
+        result,
         prevNumber;
 
     for (let i = 0; i < buttons.length; i++) {
@@ -165,7 +183,9 @@
             }
 
             if (this.innerHTML === 'sqrt') {
-                document.querySelector('.tip').innerHTML = '&radic;' + number + ' = ' + Math.sqrt(number);
+                result = Math.sqrt(number);
+
+                document.querySelector('.tip').innerHTML = '&radic;' + number + ' = ' + result;
 
             } else if (this.innerHTML === 'sqr') {
 
@@ -175,13 +195,18 @@
                     document.querySelector('.tip').innerHTML = number + '^';
                     prevNumber = number;
                 } else {
-                    document.querySelector('.tip').innerHTML = prevNumber + '^' + number + ' = ' + Math.pow(prevNumber, number);
+                    result = Math.pow(prevNumber, number);
+
+                    document.querySelector('.tip').innerHTML = prevNumber + '^' + number + ' = ' + result;
                 }
 
             } else if (this.innerHTML === 'ln') {
+                result = Math.log(number);
 
-                document.querySelector('.tip').innerHTML = 'ln(' + number + ') = ' + Math.log(number);
+                document.querySelector('.tip').innerHTML = 'ln(' + number + ') = ' + result;
             }
+
+            document.querySelector('.calc input').value = result;
         })
     }
 
